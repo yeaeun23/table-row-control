@@ -1,0 +1,593 @@
+<!-- 테이블 행 추가/삭제 플러그인 적용 예시 html -->
+
+<!-- Common style (Don't modify) -->
+<style type="text/css">
+	/* 1. Essential style : 반드시 적용되어야 하는 스타일입니다. 문서작성 시, Sample에서 제거불가 한 스타일 */
+		#wrappingDiv { word-break: break-all; font-family: malgun gothic, dotum, arial, tahoma; font-size: 12px; width:800px !important; }
+		#wrappingDiv * { max-width: 800px !important; }
+		/* (1) Section(제목, 결재선, 내용) */
+		#wrappingDiv #titleSection,#wrappingDiv #draftSection,#wrappingDiv #detailSection { display: inline-block; width:800px !important; clear:both; margin-top: 20px; vertical-align: middle; }
+		#wrappingDiv #titleSection { text-align: center; font-size: 25px; font-weight: bold; margin-bottom: 30px; }
+		#wrappingDiv #detailSection > * { margin-bottom: 10px; }
+		/* (2) Table */
+		#wrappingDiv table { border-collapse: collapse; }
+		#wrappingDiv .detailSection table { width: 800px; }
+</style>
+
+<style type="text/css">
+	/* 2. Option style : 용도에 따라 적용합니다.*/
+		/* (1) Table option : 2Type(subject / detail), Affacted elements(td), Range(wrappingDiv 하단요소) */
+		#wrappingDiv td.subjectColumn,
+		#wrappingDiv td.detailColumn { border: 1px solid black; height:22px; padding: 3px 9px 3px 9px;/*top right bottom left*/ }
+		#wrappingDiv td.detailColumn { text-align: left; }
+		#wrappingDiv td.subjectColumn { background: rgb(221, 221, 221); font-weight: bold; text-align: center; vertical-align: middle; }
+
+		/* (2) Indent option : 2Type(one / two), Affcted elements(All) */
+		#wrappingDiv .oneDepth { margin-left: 15px; }
+		#wrappingDiv .twoDepth { margin-left: 37px; }
+
+		/* (3) Partition option : 2Type (left / right), Affacted elements(div), Range('partition'div영역 하단요소) */ 
+				/* 설명 : 좌,우로 분할되는 레이아웃 작성시 사용, 1라인에 1개 요소만 배치(줄바뀜 동반) */
+				/* 사용방법 : 분할할 영역에 partition CLASS를 적용 -> 분할배치하고자하는 하위요소에 'left, right' CLASS 적용 */
+		#wrappingDiv div.partition .left { display: inline-block; clear: left; float: left; }
+		#wrappingDiv div.partition .right { display: inline-block; clear: right; float: right; }
+
+		/* (4) In a row option : 2Type(left / right), Affacted elements(All), Range('inaRowRight or inRowLeft'div영역 하단요소 */
+				/* 설명 : 좌,우 끝에 정렬되는 레이아웃 작성 시 사용, 1라인에 여러개 요소 배치, Partition option과 조합(줄바뀜 없이 배치) */
+				/* 사용방법 : 나란히 정렬하고자 하는 요소들을, 'in a row'div 영역 내에 배치*/
+		#wrappingDiv div.inaRowRight { text-align: right; }
+		#wrappingDiv div.inaRowLeft { text-align: left;  }
+		#wrappingDiv div.inaRowRight > *,
+		#wrappingDiv div.inaRowLeft > * { display: inline-block; }
+</style>
+<!-- Common style (Don't modify) -->
+
+<!-- Custom style -->
+<style>
+		/* 추가적인 스타일이 필요한 경우, 하단의 style에서 정의하여야 합니다. 상단의 Common style은 변경하지 않습니다. */
+		/* (스타일이 중복되는 경우, 기본적으로 하단에 작성한 style이 우선적으로 적용됩니다.) */
+	a.plusminusBtn { background: rgb(102, 102, 102); padding: 2px 5px; border-radius: 3px; color: rgb(255, 255, 255); cursor: hand; }
+</style>
+<!-- Custom style -->
+
+
+<div id="wrappingDiv">
+	<div id="titleSection">행 추가/삭제 테이블 예시</div>
+	
+	<div class="inaRowRight" width="300px">
+		<div class="sign_type1 sign_type_new" data-group-seq="0" data-group-name="결재" data-group-max-count="1" data-group-type="type1" data-is-reception=""><table class="tb_sign_type1"><tbody><tr><th>결재</th><td><table class="sign_member"><tbody><tr><td><span class="sign_rank"></span></td></tr><tr><td class="wrap_name"><span class="sign_name" id="status_"></span></td></tr><tr><td class="last"><span class="sign_date" id="date_"></span></td></tr></tbody></table></td></tr></tbody></table></div><br>
+	</div><br>
+	
+	
+	<!-- table1. 메가젠임플란트 - 구매(수리) 요청 및 결정서 -->
+	<p class="viewModeHiddenPart" style="font-weight: bold; font-size: 15px; margin-bottom: -15px;">&nbsp; 유형 ①</p>
+	<div class="detailSection" style="margin-bottom: 40px;">
+		<table id="table1" class="__se_tbl" style="width: 800px; margin: 0px; color: black; background: white; border: 0px solid black; font-size: 12px; font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; border-collapse: collapse !important;">
+			<tbody>
+				<tr>
+					<td class="viewModeHiddenPart" style="word-break:break-all; background: rgb(255, 255, 255); padding: 3px; border: 0px; border-image: none; height: 22px; text-align: right; font-weight: normal; vertical-align: middle;" colspan="7">
+						<a id="plusRow1" style="background: rgb(102, 102, 102); padding: 2px 5px; border-radius: 3px; color: rgb(255, 255, 255); text-decoration: none; margin-right: 0px; margin-left: 0px;" data-bypass="">추가</a>&nbsp;
+						<a id="minusRow1" style="background: rgb(102, 102, 102); padding: 2px 5px; border-radius: 3px; color: rgb(255, 255, 255); text-decoration: none; margin-right: 0px; margin-left: 0px;" data-bypass="">삭제</a>&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 50px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> NO. </td>
+					<td style="width: 160px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 품 &nbsp;&nbsp;&nbsp; 명 </td>
+					<td style="width: 160px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 규 &nbsp;&nbsp;&nbsp; 격 </td>
+					<td style="width: 70px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 수 &nbsp;&nbsp;&nbsp;량 </td>
+					<td style="width: 100px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 단 &nbsp;&nbsp;&nbsp; 가 </td>
+					<td style="width: 100px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 공 급 가 </td>
+					<td style="width: 160px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 예산세부항목 </td>
+				</tr>
+				<tr>
+					<td style="width: 50px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;">1</td>
+					<td style="width: 160px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: normal; vertical-align: middle;"> {{text}} </td>
+					<td style="width: 160px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: normal; vertical-align: middle;"> {{text}} </td>
+					<td class="amount" style="width: 70px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: right; font-weight: normal; vertical-align: middle;"> {{number}} </td>
+					<td class="unitPrice" style="width: 100px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: right; font-weight: normal; vertical-align: middle;"> {{currency}} </td>
+					<td class="supplyPrice" style="width: 100px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: right; font-weight: normal; vertical-align: middle;"> {{currency}} </td>
+					<td style="width: 160px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: left; font-weight: normal; vertical-align: middle;"> {{text}} </td>
+				</tr>
+				<tr class="copyRow1">
+					<td class="copyRowNo1" style="width: 50px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;">2</td>
+					<td style="width: 160px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: normal; vertical-align: middle;"> {{text}} </td>
+					<td style="width: 160px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: normal; vertical-align: middle;"> {{text}} </td>
+					<td class="amount" style="width: 70px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: right; font-weight: normal; vertical-align: middle;"> {{number}} </td>
+					<td class="unitPrice" style="width: 100px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: right; font-weight: normal; vertical-align: middle;"> {{currency}} </td>
+					<td class="supplyPrice" style="width: 100px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: right; font-weight: normal; vertical-align: middle;"> {{currency}} </td>
+					<td style="width: 160px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: left; font-weight: normal; vertical-align: middle;"> {{text}} </td>
+				</tr>
+				<tr>
+					<td colspan="3" style="width: 370px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 총 합 계 </td>
+					<td id="amountTotal" style="width: 70px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: right; font-weight: normal; vertical-align: middle;"></td>
+					<td id="unitPriceTotal" style="width: 100px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: right; font-weight: normal; vertical-align: middle;"></td>
+					<td id="supplyPriceTotal" style="width: 100px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: right; font-weight: normal; vertical-align: middle;"></td>
+					<td style="width: 160px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: left; font-weight: normal; vertical-align: middle;"> {{text}} </td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	
+	<!-- table2. 메가젠임플란트 - 행사/세미나/대여 물품 신청서 -->
+	<p class="viewModeHiddenPart" style="font-weight: bold; font-size: 15px; margin-bottom: -15px;">&nbsp; 유형 ②</p>
+	<div class="detailSection" style="margin-bottom: 40px;">
+		<table id="table2" style=" width : 800px; margin: 0px; color: black; background: white; border: 0px solid black; font-size: 12px; font-family: malgun gothic,dotum,arial,tahoma;  border-collapse: collapse !important;">
+			<tbody>
+				<tr>
+					<td class="viewModeHiddenPart" style="word-break:break-all; background: rgb(255, 255, 255); padding: 3px; border: 0px; border-image: none; height: 22px; text-align: right; font-weight: normal; vertical-align: middle;" colspan="6">
+						<a id="plusRow2" style="background: rgb(102, 102, 102); padding: 2px 5px; border-radius: 3px; color: rgb(255, 255, 255); text-decoration: none; margin-right: 0px; margin-left: 0px;" data-bypass="">추가</a>&nbsp;
+						<a id="minusRow2" style="background: rgb(102, 102, 102); padding: 2px 5px; border-radius: 3px; color: rgb(255, 255, 255); text-decoration: none; margin-right: 0px; margin-left: 0px;" data-bypass="">삭제</a>&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 50px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> NO. </td>
+					<td style="width: 275px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 반송품 </td>
+					<td style="width: 75px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 수 &nbsp;&nbsp;&nbsp; 량 </td>
+					<td style="width: 50px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> NO. </td>
+					<td style="width: 275px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 소모품 </td>
+					<td style="width: 75px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 수 &nbsp;&nbsp;&nbsp; 량 </td>
+				</tr>
+				<tr>
+					<td style="width: 50px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 1 </td>
+					<td style="width: 275px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: left; font-weight: normal; vertical-align: middle;"> {{text}} </td>
+					<td style="width: 75px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: right; font-weight: normal; vertical-align: middle;"> {{number}} </td>
+					<td style="width: 50px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 1 </td>
+					<td style="width: 275px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: left; font-weight: normal; vertical-align: middle;"> {{text}} </td>
+					<td style="width: 75px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: right; font-weight: normal; vertical-align: middle;"> {{number}} </td>
+				</tr>
+				<tr class="copyRow2">
+					<td class="copyRowNo2" style="width: 50px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 2 </td>
+					<td style="width: 275px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: left; font-weight: normal; vertical-align: middle;"> {{text}} </td>
+					<td style="width: 75px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: right; font-weight: normal; vertical-align: middle;"> {{number}} </td>
+					<td class="copyRowNo2" style="width: 50px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 2 </td>
+					<td style="width: 275px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: left; font-weight: normal; vertical-align: middle;"> {{text}} </td>
+					<td style="width: 75px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: right; font-weight: normal; vertical-align: middle;"> {{number}} </td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	
+	<!-- table3. 메가젠임플란트 - 행사/세미나/대여 물품 신청서(변형) -->
+	<p class="viewModeHiddenPart" style="font-weight: bold; font-size: 15px; margin-bottom: -15px;">&nbsp; 유형 ③</p>
+	<div class="detailSection" style="margin-bottom: 40px;">
+		<table id="table3" style=" width : 800px; margin: 0px; color: black; background: white; border: 0px solid black; font-size: 12px; font-family: malgun gothic,dotum,arial,tahoma;  border-collapse: collapse !important;">
+			<tbody>
+				<tr>
+					<td class="viewModeHiddenPart" style="word-break:break-all; background: rgb(255, 255, 255); padding: 3px; border: 0px; border-image: none; height: 22px; text-align: right; font-weight: normal; vertical-align: middle;" colspan="6">
+						<a id="plusRow3" style="background: rgb(102, 102, 102); padding: 2px 5px; border-radius: 3px; color: rgb(255, 255, 255); text-decoration: none; margin-right: 0px; margin-left: 0px;" data-bypass="">추가</a>&nbsp;
+						<a id="minusRow3" style="background: rgb(102, 102, 102); padding: 2px 5px; border-radius: 3px; color: rgb(255, 255, 255); text-decoration: none; margin-right: 0px; margin-left: 0px;" data-bypass="">삭제</a>&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 50px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> NO. </td>
+					<td style="width: 275px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 물 품 </td>
+					<td style="width: 75px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 수 &nbsp;&nbsp;&nbsp; 량 </td>
+					<td style="width: 50px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> NO. </td>
+					<td style="width: 275px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 물 품 </td>
+					<td style="width: 75px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 수 &nbsp;&nbsp;&nbsp; 량 </td>
+				</tr>
+				<tr>
+					<td style="width: 50px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 1 </td>
+					<td style="width: 275px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: left; font-weight: normal; vertical-align: middle;"> {{text}} </td>
+					<td style="width: 75px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: right; font-weight: normal; vertical-align: middle;"> {{number}} </td>
+					<td style="width: 50px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 2 </td>
+					<td style="width: 275px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: left; font-weight: normal; vertical-align: middle;"> {{text}} </td>
+					<td style="width: 75px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: right; font-weight: normal; vertical-align: middle;"> {{number}} </td>
+				</tr>
+				<tr class="copyRow3">
+					<td class="copyRowNo3" style="width: 50px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 3 </td>
+					<td style="width: 275px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: left; font-weight: normal; vertical-align: middle;"> {{text}} </td>
+					<td style="width: 75px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: right; font-weight: normal; vertical-align: middle;"> {{number}} </td>
+					<td class="copyRowNo3" style="width: 50px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 4 </td>
+					<td style="width: 275px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: left; font-weight: normal; vertical-align: middle;"> {{text}} </td>
+					<td style="width: 75px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: right; font-weight: normal; vertical-align: middle;"> {{number}} </td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	
+	<!-- table4. 천일식품 - 업무일지/차량운행일지 -->
+	<p class="viewModeHiddenPart" style="font-weight: bold; font-size: 15px; margin-bottom: -15px;">&nbsp; 유형 ④</p>
+	<div class="detailSection" style="margin-bottom: 40px;">
+		<table id="table4" class="__se_tbl" style="word-break:break-all; border: 0px solid rgb(0, 0, 0); width: 800px; font-family: malgun gothic,dotum,arial,tahoma; margin-top: 10px; border-collapse: collapse; border-image: none;">
+			<colgroup>
+				<col width="100">
+				<col width="100">
+				<col width="100">
+				<col width="100">
+				<col width="80">
+				<col width="80">
+				<col width="80">
+				<col width="80">
+				<col width="80">
+			</colgroup>
+			<tbody>
+				<tr>
+					<td class="viewModeHiddenPart" style="word-break:break-all; background: rgb(255, 255, 255); padding: 3px; border: 0px; border-image: none; height: 22px; text-align: right; font-weight: normal; vertical-align: middle;" colspan="9">
+						<a id="plusRow4" style="background: rgb(102, 102, 102); padding: 2px 5px; border-radius: 3px; color: rgb(255, 255, 255); text-decoration: none; margin-right: 0px; margin-left: 0px;" data-bypass="">추가</a>&nbsp;
+						<a id="minusRow4" style="background: rgb(102, 102, 102); padding: 2px 5px; border-radius: 3px; color: rgb(255, 255, 255); text-decoration: none; margin-right: 0px; margin-left: 0px;" data-bypass="">삭제</a>&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td style="word-break:break-all; background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; height: 25px; text-align: center; color: rgb(0, 0, 0); font-size: 14px; font-weight: bold; vertical-align: middle; border-image: none;" rowspan="2"><span style="font-family: 돋움,dotum; font-size: 10pt;">월/일</span></td>
+					<td style="word-break:break-all; background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; height: 25px; text-align: center; color: rgb(0, 0, 0); font-size: 14px; font-weight: bold; vertical-align: middle; border-image: none;" rowspan="2"><span style="font-family: 돋움,dotum; font-size: 10pt;">출발지</span></td>
+					<td style="word-break:break-all; background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; height: 25px; text-align: center; color: rgb(0, 0, 0); font-size: 14px; font-weight: bold; vertical-align: middle; border-image: none;" rowspan="2"><span style="font-family: 돋움,dotum; font-size: 10pt;">지역(동)</span></td>
+					<td style="word-break:break-all; background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; height: 25px; text-align: center; color: rgb(0, 0, 0); font-size: 14px; font-weight: bold; vertical-align: middle; border-image: none;" rowspan="2"><span style="font-family: 돋움,dotum; font-size: 10pt;">도착지</span></td>
+					<td style="word-break:break-all; background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; height: 25px; text-align: center; color: rgb(0, 0, 0); font-size: 14px; font-weight: bold; vertical-align: middle; border-image: none;" colspan="2"><span style="font-family: 돋움,dotum; font-size: 10pt;">교통비</span></td>
+					<td style="word-break:break-all; background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; height: 25px; text-align: center; color: rgb(0, 0, 0); font-size: 14px; font-weight: bold; vertical-align: middle; border-image: none;" colspan="2"><span style="font-family: 돋움,dotum; font-size: 10pt;">기 타</span></td>
+					<td style="word-break:break-all; background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; height: 25px; text-align: center; color: rgb(0, 0, 0); font-size: 14px; font-weight: bold; vertical-align: middle; border-image: none;" rowspan="2"><span style="font-family: 돋움,dotum; font-size: 10pt;">합 계</span></td>
+				</tr>
+				<tr>
+					<td style="word-break:break-all; background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; height: 25px; text-align: center; color: rgb(0, 0, 0); font-size: 14px; font-weight: bold; vertical-align: middle; border-image: none;"><span style="font-family: 돋움,dotum; font-size: 10pt;">주행거리</span></td>
+					<td style="word-break:break-all; background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; height: 25px; text-align: center; color: rgb(0, 0, 0); font-size: 14px; font-weight: bold; vertical-align: middle; border-image: none;"><span style="font-family: 돋움,dotum; font-size: 10pt;">금 액</span></td>
+					<td style="word-break:break-all; background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; height: 25px; text-align: center; color: rgb(0, 0, 0); font-size: 14px; font-weight: bold; vertical-align: middle; border-image: none;"><span style="font-family: 돋움,dotum; font-size: 10pt;">주차료</span></td>
+					<td style="word-break:break-all; background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; height: 25px; text-align: center; color: rgb(0, 0, 0); font-size: 14px; font-weight: bold; vertical-align: middle; border-image: none;"><span style="font-family: 돋움,dotum; font-size: 10pt;">통행료</span></td>
+				</tr>
+				<tr class="copyRow4">
+					<td style="word-break:break-all; background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; text-align: center; color: rgb(0, 0, 0); font-size: 14px; font-weight: normal; vertical-align: middle; border-image: none;" rowspan="2"><span style="font-family: 돋움,dotum; font-size: 10pt;">{{calendar}}</span></td>
+					<td style="word-break:break-all; background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; text-align: center; color: rgb(0, 0, 0); font-size: 14px; font-weight: normal; vertical-align: middle; border-image: none;"><span style="font-family: 돋움,dotum; font-size: 10pt;">{{text}}</span></td>
+					<td style="word-break:break-all; background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; text-align: center; color: rgb(0, 0, 0); font-size: 14px; font-weight: normal; vertical-align: middle; border-image: none;"><span style="font-family: 돋움,dotum; font-size: 10pt;">{{text}}</span></td>
+					<td style="word-break:break-all; background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; text-align: center; color: rgb(0, 0, 0); font-size: 14px; font-weight: normal; vertical-align: middle; border-image: none;"><span style="font-family: 돋움,dotum; font-size: 10pt;">{{text}}</span></td>
+					<td style="word-break:break-all; background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; text-align: right; color: rgb(0, 0, 0); font-size: 14px; font-weight: normal; vertical-align: middle; border-image: none;"><span style="font-family: 돋움,dotum; font-size: 10pt;">{{number$width:50$}}km</span></td>
+					<td style="word-break:break-all; background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; text-align: right; color: rgb(0, 0, 0); font-size: 14px; font-weight: normal; vertical-align: middle; border-image: none;"><span style="font-family: 돋움,dotum; font-size: 10pt;">{{currency$width:65$}}</span></td>
+					<td style="word-break:break-all; background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; text-align: right; color: rgb(0, 0, 0); font-size: 14px; font-weight: normal; vertical-align: middle; border-image: none;"><span style="font-family: 돋움,dotum; font-size: 10pt;">{{currency$width:65$}}</span></td>
+					<td style="word-break:break-all; background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; text-align: right; color: rgb(0, 0, 0); font-size: 14px; font-weight: normal; vertical-align: middle; border-image: none;"><span style="font-family: 돋움,dotum; font-size: 10pt;">{{currency$width:65$}}</span></td>
+					<td style="word-break:break-all; background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; text-align: right; color: rgb(0, 0, 0); font-size: 14px; font-weight: normal; vertical-align: middle; border-image: none;"><span style="font-family: 돋움,dotum; font-size: 10pt;">{{currency$width:65$}}</span></td>
+				</tr>
+				<tr class="copyRow4">
+					<td style="height: 25px; word-break:break-all; background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; text-align: left; color: rgb(0, 0, 0); font-size: 14px; font-weight: normal; vertical-align: middle; border-image: none;" colspan="8"><span style="font-family: 돋움,dotum; font-size: 10pt;">{{text$defaultstr:영업내용 : $}}</span></td>
+				</tr>
+				<tr>
+					<td style="word-break:break-all; background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; height: 25px; text-align: center; color: rgb(0, 0, 0); font-size: 14px; font-weight: bold; vertical-align: middle; border-image: none;" colspan="4"><span style="font-family: 돋움,dotum; font-size: 10pt;">합 계</span></td>
+					<td style="word-break:break-all; background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; text-align: right; color: rgb(0, 0, 0); font-size: 14px; font-weight: normal; vertical-align: middle; border-image: none;"><span style="font-family: 돋움,dotum; font-size: 10pt;">{{number$width:50$}}km</span></td>
+					<td style="word-break:break-all; background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; text-align: right; color: rgb(0, 0, 0); font-size: 14px; font-weight: normal; vertical-align: middle; border-image: none;"><span style="font-family: 돋움,dotum; font-size: 10pt;">{{currency$width:65$}}</span></td>
+					<td style="word-break:break-all; background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; text-align: right; color: rgb(0, 0, 0); font-size: 14px; font-weight: normal; vertical-align: middle; border-image: none;"><span style="font-family: 돋움,dotum; font-size: 10pt;">{{currency$width:65$}}</span></td>
+					<td style="word-break:break-all; background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; text-align: right; color: rgb(0, 0, 0); font-size: 14px; font-weight: normal; vertical-align: middle; border-image: none;"><span style="font-family: 돋움,dotum; font-size: 10pt;">{{currency$width:65$}}</span></td>
+					<td style="word-break:break-all; background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; text-align: right; color: rgb(0, 0, 0); font-size: 14px; font-weight: normal; vertical-align: middle; border-image: none;"><span style="font-family: 돋움,dotum; font-size: 10pt;">{{currency$width:65$}}</span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	
+	<!-- table5. 진앤현시큐리티서비스 - 법인카드 사용보고서 -->
+	<p class="viewModeHiddenPart" style="font-weight: bold; font-size: 15px; margin-bottom: -15px;">&nbsp; 유형 ⑤</p>
+	<div class="detailSection" style="margin-bottom: 40px;">
+		<table id="table5" class="detailSection">
+			<colgroup>
+			<col width="40">
+			<col width="120">
+			<col width="100">
+			<col width="100">
+			<col width="120">
+			<col width="120">
+			<col width="120">
+			<col width="100">
+			</colgroup>
+			<tbody>
+				<tr>
+					<td class="viewModeHiddenPart" style="padding: 3px; border: 0px; height: 22px; text-align: right;" colspan="8">
+						<a id="plusRow5" style="background: rgb(102, 102, 102); padding: 2px 5px; border-radius: 3px; color: rgb(255, 255, 255); text-decoration: none;">추가</a>&nbsp;
+						<a id="minusRow5" style="background: rgb(102, 102, 102); padding: 2px 5px; border-radius: 3px; color: rgb(255, 255, 255); text-decoration: none;">삭제</a>&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td class="subjectColumn" rowspan="2">No</td>
+					<td class="subjectColumn" rowspan="2">일 &nbsp;&nbsp;&nbsp; 자</td>
+					<td class="subjectColumn" rowspan="2">사 용 처</td>
+					<td class="subjectColumn" rowspan="2">구 &nbsp;&nbsp;&nbsp; 분</td>
+					<td class="subjectColumn">해당 SITE</td>
+					<td class="subjectColumn">매출가능액</td>
+					<td class="subjectColumn" rowspan="2">사용금액</td>
+					<td class="subjectColumn" rowspan="2">비 &nbsp;&nbsp;&nbsp; 고</td>
+				</tr>
+				<tr>
+					<td class="subjectColumn">프로젝트명</td>
+					<td class="subjectColumn">업무진척도</td>
+				</tr>
+				<tr class="copyRow5">
+					<td class="detailColumn copyRowNo5" style="text-align: center;" rowspan="2">1</td>
+					<td class="detailColumn" style="text-align: center;" rowspan="2">{{calendar}}</td>
+					<td class="detailColumn" style="text-align: center;" rowspan="2">{{text}}</td>
+					<td class="detailColumn" style="text-align: center;" rowspan="2">{{text}}</td>
+					<td class="detailColumn" style="text-align: center;">{{text}}</td>
+					<td class="detailColumn" style="text-align: right;">{{currency$width:110$}}</td>
+					<td class="detailColumn amount" style="text-align: right;" rowspan="2">{{currency$width:110$}}</td>
+					<td class="detailColumn" style="text-align: center;" rowspan="2">{{text}}</td>
+				</tr>
+				<tr class="copyRow5">
+					<td class="detailColumn" style="text-align: center;">{{text}}</td>
+					<td class="detailColumn" style="text-align: center;">{{text}}</td>
+				</tr>
+				<tr>
+					<td class="subjectColumn" colspan="6">합 &nbsp;&nbsp;&nbsp; 계</td>
+					<td class="detailColumn total" style="text-align: right;"></td>
+					<td class="detailColumn" style="text-align: center;">{{text}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	
+	<!-- table6. 진앤현시큐리티서비스 - 휴일근무수당일지 -->
+	<p class="viewModeHiddenPart" style="font-weight: bold; font-size: 15px; margin-bottom: -15px;">&nbsp; 유형 ⑥</p>
+	<div class="detailSection" style="margin-bottom: 40px;">
+		<table id="table6" class="detailSection">
+			<colgroup>
+				<col width="40">
+				<col width="110">
+				<col width="110">
+				<col width="330">
+				<col width="110">
+				<col width="100">
+			</colgroup>
+			<tbody>
+				<tr>
+					<td class="viewModeHiddenPart" style="padding: 3px; border: 0px; height: 22px; text-align: right;" colspan="6">
+						<a id="plusRow6" style="background: rgb(102, 102, 102); padding: 2px 5px; border-radius: 3px; color: rgb(255, 255, 255); text-decoration: none;">추가</a>&nbsp;
+						<a id="minusRow6" style="background: rgb(102, 102, 102); padding: 2px 5px; border-radius: 3px; color: rgb(255, 255, 255); text-decoration: none;">삭제</a>&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td class="subjectColumn">No</td>
+					<td class="subjectColumn">사이트명</td>
+					<td class="subjectColumn">업 &nbsp;&nbsp;&nbsp; 무</td>
+					<td class="subjectColumn">근무시간</td>
+					<td class="subjectColumn">지급금액</td>
+					<td class="subjectColumn">비 &nbsp;&nbsp;&nbsp; 고</td>
+				</tr>
+				<tr class="copyRow6">
+					<td class="detailColumn copyRowNo6" style="text-align: center;">1</td>
+					<td class="detailColumn" style="text-align: center;">{{text}}</td>
+					<td class="detailColumn" style="text-align: center;">{{text}}</td>
+					<td class="detailColumn" style="text-align: center;">{{calendar}}&nbsp;{{time}} ~ {{calendar}}&nbsp;{{time}}</td>
+					<td class="detailColumn amount" style="text-align: right;">{{currency$width:100$}}</td>
+					<td class="detailColumn" style="text-align: center;">{{text}}</td>
+				</tr>
+				<tr>
+					<td class="subjectColumn" colspan="4">합 &nbsp;&nbsp;&nbsp; 계</td>
+					<td class="detailColumn total" style="text-align: right;"></td>
+					<td class="detailColumn" style="text-align: center;">{{text}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+		
+		
+	<!-- table7. 진앤현시큐리티서비스 - 휴일근무수당일지 -->
+	<p class="viewModeHiddenPart" style="font-weight: bold; font-size: 15px; margin-bottom: -15px;">&nbsp; 유형 ⑦</p>
+	<div class="detailSection" style="margin-bottom: 40px;">
+		<table id="table7" class="detailSection">
+			<colgroup>
+				<col width="40px">
+				<col width="150px">
+				<col width="200px">
+				<col width="80px">
+				<col width="80px">
+				<col width="100px">
+				<col width="150px">
+			</colgroup>
+			<tbody>
+				<tr>
+					<td class="viewModeHiddenPart" style="padding: 3px; border: 0px; height: 22px; text-align: right;" colspan="8">
+						<a id="plusRow7" style="background: rgb(102, 102, 102); padding: 2px 5px; border-radius: 3px; color: rgb(255, 255, 255); text-decoration: none;">추가</a>&nbsp;
+						<a id="minusRow7" style="background: rgb(102, 102, 102); padding: 2px 5px; border-radius: 3px; color: rgb(255, 255, 255); text-decoration: none;">삭제</a>&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td class="subjectColumn">No</td>
+					<td class="subjectColumn">근무구분</td>
+					<td class="subjectColumn">근무시간</td>
+					<td class="subjectColumn">근무시간</td>
+					<td class="subjectColumn">정상</td>
+					<td class="subjectColumn">수당</td>
+					<td class="subjectColumn">업무내용</td>
+				</tr>
+				<tr class="copyRow7">
+					<td class="detailColumn copyRowNo7" style="text-align: center;" rowspan="2">1</td>
+					<td class="detailColumn" style="text-align: center;" rowspan="2">{{cSel_비상근무(24시이전)_비상근무(24시이후)_비상소집_주말비상당직(다기능)}}</td>
+					<td class="detailColumn" style="text-align: center;">{{calendar}} {{cSel_00_01_02_03_04_05_06_07_08_09_10_11_12_13_14_15_16_17_18_19_20_21_22_23}}</td>
+					<td class="detailColumn" style="text-align: center;" rowspan="2">{{number$width:30$}}시간</td>
+					<td class="detailColumn" style="text-align: center;" rowspan="2">{{check_근무}}</td>
+					<td class="detailColumn" style="text-align: center;" rowspan="2">{{currency}}</td>
+					<td class="detailColumn" style="text-align: center;" rowspan="2">{{text}}</td>
+				</tr>
+				<tr class="copyRow7">
+					<td class="detailColumn" style="text-align: center;">{{calendar}} {{cSel_00_01_02_03_04_05_06_07_08_09_10_11_12_13_14_15_16_17_18_19_20_21_22_23}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	
+	<!-- table8. 메가젠임플란트 - 교환신청서 -->
+	<p class="viewModeHiddenPart" style="font-weight: bold; font-size: 15px; margin-bottom: -15px;">&nbsp; 유형 ⑧</p>
+	<div class="detailSection" style="margin-bottom: 40px;">
+		<table id="table8" class="__se_tbl" style="width : 800px; margin: 0px; color: black; background: white; border: 0px solid black; font-size: 12px; font-family: malgun gothic,dotum,arial,tahoma;  border-collapse: collapse !important;">
+			<tbody>
+				<tr>
+					<td class="viewModeHiddenPart" style="word-break:break-all; background: rgb(255, 255, 255); padding: 3px; border: 0px; border-image: none; height: 22px; text-align: right; font-weight: normal; vertical-align: middle;" colspan="8">
+						<a id="plusRow8" style="background: rgb(102, 102, 102); padding: 2px 5px; border-radius: 3px; color: rgb(255, 255, 255); text-decoration: none; margin-right: 0px; margin-left: 0px;" data-bypass="">추가</a>&nbsp;
+						<a id="minusRow8" style="background: rgb(102, 102, 102); padding: 2px 5px; border-radius: 3px; color: rgb(255, 255, 255); text-decoration: none; margin-right: 0px; margin-left: 0px;" data-bypass="">삭제</a>&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 70px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 구 분 </td>
+					<td style="width: 150px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 품 명 </td>
+					<td style="width: 150px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 형 명 </td>
+					<td style="width: 70px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 수 량 </td>
+					<td style="width: 100px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 소비자가 </td>
+					<td style="width: 60px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 공급률 </td>
+					<td style="width: 100px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 금 액 </td>
+					<td style="width: 100px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;"> 비 고 </td>
+				</tr>
+				<tr class="copyRow8">
+					<td class="rowspan8" style="width: 70px; height: 22px; background: #ddd; padding: 5px !important; border: 1px solid black; text-align: center; font-weight: bold; vertical-align: middle;" rowspan="1"> 입 고 </td>
+					<td style="width: 150px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: left; font-weight: normal; vertical-align: middle;"> {{text}} </td>
+					<td style="width: 150px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: left; font-weight: normal; vertical-align: middle;"> {{text}} </td>
+					<td style="width: 70px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: right; font-weight: normal; vertical-align: middle;"> {{number}} </td>
+					<td style="width: 100px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: right; font-weight: normal; vertical-align: middle;"> {{currency}} </td>
+					<td style="width: 60px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: right; font-weight: normal; vertical-align: middle;"> {{text}} </td>
+					<td style="width: 100px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: right; font-weight: normal; vertical-align: middle;"> {{currency}} </td>
+					<td style="width: 100px; height: 22px; background: #fff; padding: 5px !important; border: 1px solid black; text-align: left; font-weight: normal; vertical-align: middle;"> {{text}} </td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	
+	<!-- table9. 위지윅스튜디오 - 외주PJT계약서 -->
+	<p class="viewModeHiddenPart" style="font-weight: bold; font-size: 15px; margin-bottom: -15px;">&nbsp; 유형 ⑨</p>
+	<div class="detailSection" style="margin-bottom: 40px;">
+		<table id="table9" class="detailSection">
+			<colgroup>
+			<col width="100">
+			<col width="50">
+			<col width="50">
+			<col width="150">
+			<col width="150">
+			<col width="150">
+			<col width="150">
+			</colgroup>
+			<tbody>
+				<tr>
+					<td class="viewModeHiddenPart" style="padding: 3px; border: 0px; height: 22px; text-align: right;" colspan="7">
+						<a id="plusRow9" style="background: rgb(102, 102, 102); padding: 2px 5px; border-radius: 3px; color: rgb(255, 255, 255); text-decoration: none;">추가</a>&nbsp;
+						<a id="minusRow9" style="background: rgb(102, 102, 102); padding: 2px 5px; border-radius: 3px; color: rgb(255, 255, 255); text-decoration: none;">삭제</a>&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td rowspan="5" class="subjectColumn rowspan9"> 계약금액 </td>
+					<td colspan="2" class="subjectColumn"> 구 분 </td>
+					<td class="subjectColumn"> % </td>
+					<td class="subjectColumn"> 금 액 </td>
+					<td class="subjectColumn"> 조 건 </td>
+					<td class="subjectColumn"> 일 정 </td>
+				</tr>
+				<tr>
+					<td colspan="2" class="detailColumn" style="text-align: center;"> 계약금 </td>
+					<td class="detailColumn" style="text-align: center;"> {{number}}% </td>
+					<td class="detailColumn" style="text-align: center;"> {{currency}} </td>
+					<td class="detailColumn" style="text-align: center;"> {{text}} </td>
+					<td class="detailColumn" style="text-align: center;"> {{text}} </td>
+				</tr>
+				<tr>
+					<td rowspan="3" class="detailColumn rowspan9" style="text-align: center;"> 중<br>도<br>금 </td>
+					<td class="detailColumn" style="text-align: center;"> 1차 </td>
+					<td class="detailColumn" style="text-align: center;"> {{number}}% </td>
+					<td class="detailColumn" style="text-align: center;"> {{currency}} </td>
+					<td class="detailColumn" style="text-align: center;"> {{text}} </td>
+					<td class="detailColumn" style="text-align: center;"> {{text}} </td>
+				</tr>
+				<tr>
+					<td class="detailColumn" style="text-align: center;"> 2차 </td>
+					<td class="detailColumn" style="text-align: center;"> {{number}}% </td>
+					<td class="detailColumn" style="text-align: center;"> {{currency}} </td>
+					<td class="detailColumn" style="text-align: center;"> {{text}} </td>
+					<td class="detailColumn" style="text-align: center;"> {{text}} </td>
+				</tr>
+				<tr class="copyRow9">
+					<td class="detailColumn" style="text-align: center;"> <span class="copyRowNo9" style="inline-block">3</span>차 </td>
+					<td class="detailColumn" style="text-align: center;"> {{number}}% </td>
+					<td class="detailColumn" style="text-align: center;"> {{currency}} </td>
+					<td class="detailColumn" style="text-align: center;"> {{text}} </td>
+					<td class="detailColumn" style="text-align: center;"> {{text}} </td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	
+	<!-- table10. 위지윅스튜디오 - 국내출장보고서 -->
+	<p class="viewModeHiddenPart" style="font-weight: bold; font-size: 15px; margin-bottom: -15px;">&nbsp; 유형 ⑩</p>
+	<div class="detailSection" style="margin-bottom: 40px;">
+		<table id="table10" class="detailSection">
+			<colgroup>
+				<col width="100">
+				<col width="300">
+				<col width="100">
+				<col width="300">
+			</colgroup>
+			<tbody>
+				<tr>
+					<td class="viewModeHiddenPart" style="padding: 3px; border: 0px; height: 22px; text-align: right;" colspan="4">
+						<a id="plusRow10" style="background: rgb(102, 102, 102); padding: 2px 5px; border-radius: 3px; color: rgb(255, 255, 255); text-decoration: none;">추가</a>&nbsp;
+						<a id="minusRow10" style="background: rgb(102, 102, 102); padding: 2px 5px; border-radius: 3px; color: rgb(255, 255, 255); text-decoration: none;">삭제</a>&nbsp;
+					</td>
+				</tr>
+				<tr class="copyRow10">
+					<td class="subjectColumn">지 역</td>
+					<td class="detailColumn">{{text}}</td>
+					<td class="subjectColumn">기 간</td>
+					<td class="detailColumn"><span class="startDate">{{calendar}}</span> ~ <span class="endDate">{{calendar}}</span>&nbsp;&nbsp;<span class="dayCheck"></span></td>
+				</tr>
+				<tr class="copyRow10">
+					<td class="subjectColumn">목 적</td>
+					<td colspan="3" class="detailColumn">{{text}}</td>
+				</tr>
+				<tr class="copyRow10">
+					<td class="subjectColumn">일 정</td>
+					<td colspan="3" class="detailColumn">{{text}}</td>
+				</tr>
+				<tr class="copyRow10">
+					<td><br></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	
+	<!-- table11. 위지윅스튜디오 - 국내출장보고서 (변형) -->
+	<p class="viewModeHiddenPart" style="font-weight: bold; font-size: 15px; margin-bottom: -15px;">&nbsp; 유형 ⑪</p>
+	<div class="detailSection" style="margin-bottom: 40px;">
+		<table id="table11" class="detailSection">
+			<colgroup>
+				<col width="800">
+			</colgroup>
+			<tbody>
+				<tr>
+					<td class="viewModeHiddenPart" style="padding: 3px; border: 0px; height: 22px; text-align: right;" colspan="4">
+						<a id="plusRow11" style="background: rgb(102, 102, 102); padding: 2px 5px; border-radius: 3px; color: rgb(255, 255, 255); text-decoration: none;">추가</a>&nbsp;
+						<a id="minusRow11" style="background: rgb(102, 102, 102); padding: 2px 5px; border-radius: 3px; color: rgb(255, 255, 255); text-decoration: none;">삭제</a>&nbsp;
+					</td>
+				</tr>
+				<tr class="copyRow11">
+					<td>
+						<table>
+							<colgroup>
+								<col width="100">
+								<col width="300">
+								<col width="100">
+								<col width="300">
+							</colgroup>
+							<tbody>
+								<tr>
+									<td class="subjectColumn">지 역</td>
+									<td class="detailColumn">{{text}}</td>
+									<td class="subjectColumn">기 간</td>
+									<td class="detailColumn"><span class="startDate">{{calendar}}</span> ~ <span class="endDate">{{calendar}}</span>&nbsp;&nbsp;<span class="dayCheck"></span></td>
+								</tr>
+								<tr>
+									<td class="subjectColumn">목 적</td>
+									<td colspan="3" class="detailColumn">{{text}}</td>
+								</tr>
+								<tr>
+									<td class="subjectColumn">일 정</td>
+									<td colspan="3" class="detailColumn">{{text}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+				<tr class="copyRow11">
+					<td><br></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	
+</div>

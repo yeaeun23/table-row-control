@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Plug-In Table Test</title>
+
+	<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+	<script type="text/javascript" src="PlusMinusRow.js"></script>
+
+	<!-- Common style (Don't modify) -->
+	<style type="text/css">
+	  /* 1. Essential style : 반드시 적용되어야 하는 스타일입니다. 문서작성 시, Sample에서 제거불가 한 스타일 */
+	    #wrappingDiv { word-break: break-all; font-family: malgun gothic, dotum, arial, tahoma; font-size: 12px; width:800px !important; }
+	    #wrappingDiv * { max-width: 800px !important; }
+	    /* (1) Section(제목, 결재선, 내용) */
+	    #wrappingDiv #titleSection,#wrappingDiv #draftSection,#wrappingDiv #detailSection { display: inline-block; width:800px !important; clear:both; margin-top: 20px; vertical-align: middle; }
+	    #wrappingDiv #titleSection { text-align: center; font-size: 25px; font-weight: bold; margin-bottom: 30px; }
+	    #wrappingDiv #detailSection > * { margin-bottom: 10px; }
+	    /* (2) Table */
+	    #wrappingDiv table { border-collapse: collapse; }
+	    #wrappingDiv .detailSection table { width: 800px; }
+	</style>
+
+	<style type="text/css">
+	  /* 2. Option style : 용도에 따라 적용합니다.*/
+	    /* (1) Table option : 2Type(subject / detail), Affacted elements(td), Range(wrappingDiv 하단요소) */
+	    #wrappingDiv td.subjectColumn,
+	    #wrappingDiv td.detailColumn { border: 1px solid black; height:22px; padding: 3px 9px 3px 9px;/*top right bottom left*/ }
+	    #wrappingDiv td.detailColumn { text-align: left; }
+	    #wrappingDiv td.subjectColumn { background: rgb(221, 221, 221); font-weight: bold; text-align: center; vertical-align: middle; }
+
+	    /* (2) Indent option : 2Type(one / two), Affcted elements(All) */
+	    #wrappingDiv .oneDepth { margin-left: 15px; }
+	    #wrappingDiv .twoDepth { margin-left: 37px; }
+
+	    /* (3) Partition option : 2Type (left / right), Affacted elements(div), Range('partition'div영역 하단요소) */ 
+	        /* 설명 : 좌,우로 분할되는 레이아웃 작성시 사용, 1라인에 1개 요소만 배치(줄바뀜 동반) */
+	        /* 사용방법 : 분할할 영역에 partition CLASS를 적용 -> 분할배치하고자하는 하위요소에 'left, right' CLASS 적용 */
+	    #wrappingDiv div.partition .left { display: inline-block; clear: left; float: left; }
+	    #wrappingDiv div.partition .right { display: inline-block; clear: right; float: right; }
+
+	    /* (4) In a row option : 2Type(left / right), Affacted elements(All), Range('inaRowRight or inRowLeft'div영역 하단요소 */
+	        /* 설명 : 좌,우 끝에 정렬되는 레이아웃 작성 시 사용, 1라인에 여러개 요소 배치, Partition option과 조합(줄바뀜 없이 배치) */
+	        /* 사용방법 : 나란히 정렬하고자 하는 요소들을, 'in a row'div 영역 내에 배치*/
+	    #wrappingDiv div.inaRowRight { text-align: right; }
+	    #wrappingDiv div.inaRowLeft { text-align: left;  }
+	    #wrappingDiv div.inaRowRight > *,
+	    #wrappingDiv div.inaRowLeft > * { display: inline-block; }
+	</style>
+	<!-- Common style (Don't modify) -->
+
+	<!-- Custom style -->
+	<style>
+	  	/* 추가적인 스타일이 필요한 경우, 하단의 style에서 정의하여야 합니다. 상단의 Common style은 변경하지 않습니다. */
+	  	/* (스타일이 중복되는 경우, 기본적으로 하단에 작성한 style이 우선적으로 적용됩니다.) */
+		a.plusminusBtn { background: rgb(102, 102, 102); padding: 2px 5px; border-radius: 3px; color: rgb(255, 255, 255); cursor: hand; }
+	</style>
+	<!-- Custom style -->
+
+	<script>
+		$(document).ready(function() {
+			$('#table1').PlusMinusRow({		// 가로 제목 테이블
+				tableId : "table1",
+				plusBtnId : "plusRow1",
+				minusBtnId : "minusRow1",
+				copyRowClass : "copyRow1",
+			});
+			$('#table2').PlusMinusRow({		// 세로 제목 테이블
+				tableId : "table2",
+				plusBtnId : "plusRow2",
+				minusBtnId : "minusRow2",
+				copyRowClass : "copyRow2",
+			});
+			$('#table3').PlusMinusRow({		// 순번 테이블 - 증가량 1
+				tableId : "table3",
+				plusBtnId : "plusRow3",
+				minusBtnId : "minusRow3",
+				copyRowClass : "copyRow3",
+				copyRowNoClass : "copyRowNo3"
+			});
+			$('#table4').PlusMinusRow({		// 순번 테이블 - 증가량 2
+				tableId : "table4",
+				plusBtnId : "plusRow4",
+				minusBtnId : "minusRow4",
+				copyRowClass : "copyRow4",
+				copyRowNoClass : "copyRowNo4",
+				copyRowNoSize : 2
+			});
+			$('#table5').PlusMinusRow({		// 최대행(maxRow) 제한(5) 테이블
+				tableId : "table5",
+				plusBtnId : "plusRow5",
+				minusBtnId : "minusRow5",
+				copyRowClass : "copyRow5",
+				maxRow : 5
+			});
+			$('#table6').PlusMinusRow({		// rowspan 테이블
+				tableId : "table6",
+				plusBtnId : "plusRow6",
+				minusBtnId : "minusRow6",
+				copyRowClass : "copyRow6",
+				rowspanClass : "rowspan6"
+			});
+			$('#table7').PlusMinusRow({		// 추가/삭제시 콜백 함수 실행 테이블
+				tableId : "table7",
+				plusBtnId : "plusRow7",
+				minusBtnId : "minusRow7",
+				copyRowClass : "copyRow7",
+				plusRowCallback : function() {
+					alert("plusBtn clicked.")
+				},
+				minusRowCallback : function() {
+					alert("minusBtn clicked.")
+				}
+			});
+			$('#table8').PlusMinusRow({		// 최대순번(maxNo) 제한(12) 테이블
+				tableId : "table8",
+				plusBtnId : "plusRow8",
+				minusBtnId : "minusRow8",
+				copyRowClass : "copyRow8",
+				copyRowNoClass : "copyRowNo8",
+				copyRowNoSize : 4,
+				maxNo : 12
+			});
+			$('#table9').PlusMinusRow({		// 다중행 추가/삭제 테이블
+				tableId : "table9",
+				plusBtnId : "plusRow9",
+				minusBtnId : "minusRow9",
+				copyRowClass : "copyRow9",
+				copyRowNoClass : "copyRowNo9",
+				copyRowNoSize : 3
+			});
+			$('#table10').PlusMinusRow({		// 다중행 추가/삭제 테이블 (rowspan)
+				tableId : "table10",
+				plusBtnId : "plusRow10",
+				minusBtnId : "minusRow10",
+				copyRowClass : "copyRow10",
+				copyRowNoClass : "copyRowNo10"
+			});
+			$('#table11').PlusMinusRow({		// 다중행 추가/삭제 테이블 (rowspan)
+				tableId : "table11",
+				plusBtnId : "plusRow11",
+				minusBtnId : "minusRow11",
+				copyRowClass : "copyRow11",
+				copyRowNoClass : "copyRowNo11",
+				copyRowNoSize : 4
+			});
+			$('#table12').PlusMinusRow({		// 다중행 추가/삭제 테이블 (rowspan)
+				tableId : "table12",
+				plusBtnId : "plusRow12",
+				minusBtnId : "minusRow12",
+				copyRowClass : "copyRow12",
+				copyRowNoClass : "copyRowNo12",
+				copyRowNoSize : 4,
+				rowspanClass : "rowspan12"
+			});
+		});
+	</script>
+</head>
+
+
+<body>
+	<div id="wrappingDiv">
+		<div id="titleSection">Plug-In Table Test</div>
+
+	    <div class="detailSection" style="margin-bottom:50px;">
+        <table id="table1">
+        	<colgroup>
+        		<col width="200">
+        		<col width="200">
+        		<col width="200">
+        		<col width="200">
+        	</colgroup>
+            <tbody>
+                <tr>
+                  	<td  colspan="4" class="detailColumn" style="font-weight: bold; border: none; font-size: 15px;">#table1 - 가로 제목 테이블</td>
+                </tr>
+                <tr>
+			        <td colspan="4" class="detailColumn" style="border: 0px; text-align: right;">
+			        	<a id="plusRow1" class="plusminusBtn">추가</a>&nbsp;
+			        	<a id="minusRow1" class="plusminusBtn">삭제</a>&nbsp;
+			        </td>
+			    </tr>
+                <tr>
+                	<td class="subjectColumn"></td>
+                	<td class="subjectColumn"></td>
+                	<td class="subjectColumn"></td>
+                	<td class="subjectColumn"></td>
+                </tr>
+                <tr class="copyRow1">
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                </tr>
+          	</tbody>
+        </table>
+		</div>
+
+
+		<div class="detailSection" style="margin-bottom:50px;">
+        <table id="table2">
+        	<colgroup>
+        		<col width="200">
+        		<col width="200">
+        		<col width="200">
+        		<col width="200">
+        	</colgroup>
+            <tbody>
+                <tr>
+                  	<td  colspan="4" class="detailColumn" style="font-weight: bold; border: none; font-size: 15px;">#table2 - 세로 제목 테이블</td>
+                </tr>
+                <tr>
+			        <td colspan="4" class="detailColumn" style="border: 0px; text-align: right;">
+			        	<a id="plusRow2" class="plusminusBtn">추가</a>&nbsp;
+			        	<a id="minusRow2" class="plusminusBtn">삭제</a>&nbsp;
+			        </td>
+			    </tr>
+                <tr class="copyRow2">
+                	<td class="subjectColumn"></td>
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                </tr>
+          	</tbody>
+        </table>
+		</div>
+
+
+		<div class="detailSection" style="margin-bottom:50px;">
+        <table id="table3">
+        	<colgroup>
+        		<col width="200">
+        		<col width="200">
+        		<col width="200">
+        		<col width="200">
+        	</colgroup>
+            <tbody>
+                <tr>
+                  	<td  colspan="4" class="detailColumn" style="font-weight: bold; border: none; font-size: 15px;">#table3 - 순번 테이블 - 증가량 1</td>
+                </tr>
+                <tr>
+			        <td colspan="4" class="detailColumn" style="border: 0px; text-align: right;">
+			        	<a id="plusRow3" class="plusminusBtn">추가</a>&nbsp;
+			        	<a id="minusRow3" class="plusminusBtn">삭제</a>&nbsp;
+			        </td>
+			    </tr>
+                <tr class="copyRow3">
+                	<td class="copyRowNo3 subjectColumn">1</td>
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                </tr>
+          	</tbody>
+        </table>
+		</div>
+
+		<div class="detailSection" style="margin-bottom:50px;">
+        <table id="table4">
+        	<colgroup>
+        		<col width="200">
+        		<col width="200">
+        		<col width="200">
+        		<col width="200">
+        	</colgroup>
+            <tbody>
+                <tr>
+                  	<td  colspan="4" class="detailColumn" style="font-weight: bold; border: none; font-size: 15px;">#table4 - 순번 테이블 - 증가량 2</td>
+                </tr>
+                <tr>
+			        <td colspan="4" class="detailColumn" style="border: 0px; text-align: right;">
+			        	<a id="plusRow4" class="plusminusBtn">추가</a>&nbsp;
+			        	<a id="minusRow4" class="plusminusBtn">삭제</a>&nbsp;
+			        </td>
+			    </tr>
+                <tr class="copyRow4">
+                	<td class="copyRowNo4 subjectColumn">1</td>
+                	<td class="detailColumn"></td>
+                	<td class="copyRowNo4 subjectColumn">2</td>
+                	<td class="detailColumn"></td>
+                </tr>
+          	</tbody>
+        </table>
+		</div>
+
+		<div class="detailSection" style="margin-bottom:50px;">
+        <table id="table5">
+        	<colgroup>
+        		<col width="200">
+        		<col width="200">
+        		<col width="200">
+        		<col width="200">
+        	</colgroup>
+            <tbody>
+                <tr>
+                  	<td  colspan="4" class="detailColumn" style="font-weight: bold; border: none; font-size: 15px;">#table5 - 최대행 제한(5) 테이블</td>
+                </tr>
+                <tr>
+			        <td colspan="4" class="detailColumn" style="border: 0px; text-align: right;">
+			        	<a id="plusRow5" class="plusminusBtn">추가</a>&nbsp;
+			        	<a id="minusRow5" class="plusminusBtn">삭제</a>&nbsp;
+			        </td>
+			    </tr>
+                <tr>
+                	<td class="subjectColumn"></td>
+                	<td class="subjectColumn"></td>
+                	<td class="subjectColumn"></td>
+                	<td class="subjectColumn"></td>
+                </tr>
+                <tr class="copyRow5">
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                </tr>
+          	</tbody>
+        </table>
+		</div>
+
+		<div class="detailSection" style="margin-bottom:50px;">
+        <table id="table6">
+        	<colgroup>
+        		<col width="200">
+        		<col width="200">
+        		<col width="200">
+        		<col width="200">
+        	</colgroup>
+            <tbody>
+                <tr>
+                  	<td  colspan="4" class="detailColumn" style="font-weight: bold; border: none; font-size: 15px;">#table6 - rowspan 테이블</td>
+                </tr>
+                <tr>
+			        <td colspan="4" class="detailColumn" style="border: 0px; text-align: right;">
+			        	<a id="plusRow6" class="plusminusBtn">추가</a>&nbsp;
+			        	<a id="minusRow6" class="plusminusBtn">삭제</a>&nbsp;
+			        </td>
+			    </tr>
+                <tr class="copyRow6">
+                	<td class="rowspan6 subjectColumn" rowspan="1"></td>
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                </tr>
+          	</tbody>
+        </table>
+		</div>
+
+		<div class="detailSection" style="margin-bottom:50px;">
+        <table id="table7">
+        	<colgroup>
+        		<col width="200">
+        		<col width="200">
+        		<col width="200">
+        		<col width="200">
+        	</colgroup>
+            <tbody>
+                <tr>
+                  	<td  colspan="4" class="detailColumn" style="font-weight: bold; border: none; font-size: 15px;">#table7 - 추가/삭제시 콜백 함수 실행 테이블</td>
+                </tr>
+                <tr>
+			        <td colspan="4" class="detailColumn" style="border: 0px; text-align: right;">
+			        	<a id="plusRow7" class="plusminusBtn">추가</a>&nbsp;
+			        	<a id="minusRow7" class="plusminusBtn">삭제</a>&nbsp;
+			        </td>
+			    </tr>
+                <tr class="copyRow7">
+                	<td class="subjectColumn"></td>
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                </tr>
+          	</tbody>
+        </table>
+		</div>
+
+		<div class="detailSection" style="margin-bottom:50px;">
+        <table id="table8">
+        	<colgroup>
+        		<col width="100">
+        		<col width="100">
+        		<col width="100">
+        		<col width="100">
+        		<col width="100">
+        		<col width="100">
+        		<col width="100">
+        		<col width="100">
+        	</colgroup>
+            <tbody>
+                <tr>
+                  	<td  colspan="8" class="detailColumn" style="font-weight: bold; border: none; font-size: 15px;">#table8 - 최대순번 제한(12) 테이블</td>
+                </tr>
+                <tr>
+			        <td colspan="8" class="detailColumn" style="border: 0px; text-align: right;">
+			        	<a id="plusRow8" class="plusminusBtn">추가</a>&nbsp;
+			        	<a id="minusRow8" class="plusminusBtn">삭제</a>&nbsp;
+			        </td>
+			    </tr>
+                <tr class="copyRow8">
+                	<td class="copyRowNo8 subjectColumn">1</td>
+                	<td class="detailColumn"></td>
+                	<td class="copyRowNo8 subjectColumn">2</td>
+                	<td class="detailColumn"></td>
+                	<td class="copyRowNo8 subjectColumn">3</td>
+                	<td class="detailColumn"></td>
+                	<td class="copyRowNo8 subjectColumn">4</td>
+                	<td class="detailColumn"></td>
+                </tr>
+          	</tbody>
+        </table>
+		</div>
+
+		<div class="detailSection" style="margin-bottom:50px;">
+        <table id="table9">
+        	<colgroup>
+        		<col width="100">
+        		<col width="100">
+        		<col width="100">
+        		<col width="100">
+        		<col width="100">
+        		<col width="100">
+        		<col width="100">
+        		<col width="100">
+        	</colgroup>
+            <tbody>
+                <tr>
+                  	<td  colspan="8" class="detailColumn" style="font-weight: bold; border: none; font-size: 15px;">#table9 - 다중행 추가/삭제 테이블</td>
+                </tr>
+                <tr>
+			        <td colspan="8" class="detailColumn" style="border: 0px; text-align: right;">
+			        	<a id="plusRow9" class="plusminusBtn">추가</a>&nbsp;
+			        	<a id="minusRow9" class="plusminusBtn">삭제</a>&nbsp;
+			        </td>
+			    </tr>
+                <tr class="copyRow9">
+                	<td class="copyRowNo9 subjectColumn">1</td>
+                	<td class="detailColumn"></td>
+                	<td class="copyRowNo9 subjectColumn">2</td>
+                	<td class="detailColumn"></td>
+                	<td class="copyRowNo9 subjectColumn">3</td>
+                	<td class="detailColumn" colspan="3"></td>
+                </tr>
+                <tr class="copyRow9">
+                	<td class="copyRowNo9 subjectColumn">4</td>
+                	<td class="detailColumn"></td>
+                	<td class="copyRowNo9 subjectColumn">5</td>
+                	<td class="detailColumn"></td>
+                	<td class="copyRowNo9 subjectColumn">6</td>
+                	<td class="detailColumn" colspan="3"></td>
+                </tr>
+          	</tbody>
+        </table>
+		</div>
+
+		<div class="detailSection" style="margin-bottom:50px;">
+        <table id="table10">
+        	<colgroup>
+        		<col width="100">
+        		<col width="175">
+        		<col width="175">
+        		<col width="175">
+        		<col width="175">
+        	</colgroup>
+            <tbody>
+                <tr>
+                  	<td  colspan="5" class="detailColumn" style="font-weight: bold; border: none; font-size: 15px;">#table10 - 다중행 추가/삭제 테이블 (rowspan)</td>
+                </tr>
+                <tr>
+			        <td colspan="5" class="detailColumn" style="border: 0px; text-align: right;">
+			        	<a id="plusRow10" class="plusminusBtn">추가</a>&nbsp;
+			        	<a id="minusRow10" class="plusminusBtn">삭제</a>&nbsp;
+			        </td>
+			    </tr>
+                <tr class="copyRow10">
+                	<td class="copyRowNo10 subjectColumn" rowspan="2">1</td>
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                </tr>
+                <tr class="copyRow10">
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                </tr>
+          	</tbody>
+        </table>
+		</div>
+
+		<div class="detailSection" style="margin-bottom:50px;">
+        <table id="table11">
+        	<colgroup>
+        		<col width="100">
+        		<col width="175">
+        		<col width="175">
+        		<col width="175">
+        		<col width="175">
+        	</colgroup>
+            <tbody>
+                <tr>
+                  	<td  colspan="5" class="detailColumn" style="font-weight: bold; border: none; font-size: 15px;">#table11 - 다중행 추가/삭제 테이블 (rowspan)</td>
+                </tr>
+                <tr>
+			        <td colspan="5" class="detailColumn" style="border: 0px; text-align: right;">
+			        	<a id="plusRow11" class="plusminusBtn">추가</a>&nbsp;
+			        	<a id="minusRow11" class="plusminusBtn">삭제</a>&nbsp;
+			        </td>
+			    </tr>
+                <tr class="copyRow11">
+                	<td class="copyRowNo11 subjectColumn" rowspan="2">1</td>
+                	<td class="detailColumn"></td>
+                	<td class="copyRowNo11 subjectColumn" rowspan="2">2</td>
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                </tr>
+                <tr class="copyRow11">
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                </tr>
+                <tr class="copyRow11">
+                	<td class="copyRowNo11 subjectColumn" rowspan="2">3</td>
+                	<td class="detailColumn"></td>
+                	<td class="copyRowNo11 subjectColumn" rowspan="2">4</td>
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                </tr>
+                <tr class="copyRow11">
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                </tr>
+          	</tbody>
+        </table>
+		</div>
+
+		<div class="detailSection" style="margin-bottom:50px;">
+        <table id="table12">
+        	<colgroup>
+        		<col width="100">
+        		<col width="175">
+        		<col width="175">
+        		<col width="175">
+        		<col width="175">
+        	</colgroup>
+            <tbody>
+                <tr>
+                  	<td  colspan="5" class="detailColumn" style="font-weight: bold; border: none; font-size: 15px;">#table12 - 다중행 추가/삭제 테이블 (rowspan)</td>
+                </tr>
+                <tr>
+			        <td colspan="5" class="detailColumn" style="border: 0px; text-align: right;">
+			        	<a id="plusRow12" class="plusminusBtn">추가</a>&nbsp;
+			        	<a id="minusRow12" class="plusminusBtn">삭제</a>&nbsp;
+			        </td>
+			    </tr>
+                <tr class="copyRow12">
+	                <td class="subjectColumn rowspan12" rowspan="4">항목</td>
+                	<td class="copyRowNo12 subjectColumn" rowspan="2">1</td>
+                	<td class="detailColumn"></td>
+                	<td class="copyRowNo12 subjectColumn" rowspan="2">2</td>
+                	<td class="detailColumn"></td>
+                </tr>
+                <tr class="copyRow12">
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                </tr>
+                <tr class="copyRow12">
+                	<td class="copyRowNo12 subjectColumn" rowspan="2">3</td>
+                	<td class="detailColumn"></td>
+                	<td class="copyRowNo12 subjectColumn" rowspan="2">4</td>
+                	<td class="detailColumn"></td>
+                </tr>
+                <tr class="copyRow12">
+                	<td class="detailColumn"></td>
+                	<td class="detailColumn"></td>
+                </tr>
+          	</tbody>
+        </table>
+		</div>
+	</div>
+</body>
+</html>
